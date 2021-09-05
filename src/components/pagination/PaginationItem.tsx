@@ -12,10 +12,7 @@ const PaginationItem = ({
   handleClick,
 }: PaginationItemPropsType) => {
   return (
-    <IconButton
-      isActive={isActive}
-      handleClick={handleClick}
-    >
+    <IconButton isActive={isActive} handleClick={handleClick}>
       {pageNumber}
     </IconButton>
   );

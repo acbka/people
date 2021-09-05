@@ -34,12 +34,14 @@ const ArrowLeft = styled(ArrowRightIcon)`
   transform: rotate(180deg);
 `;
 const Dots = styled.div`
+  display: flex;
+  justify-content: center;
   width: 35px;
   height: 35px;
   background: var(--color-grey);
   border-radius: 50%;
-  padding: 3px 11px;
-  color: #fff;
+  padding-top: 4px;
+  color: var(--color-pink);
 `;
 
 const Pagination = ({ pages, page, setPage }: PaginationPropsType) => {
@@ -93,17 +95,11 @@ const Pagination = ({ pages, page, setPage }: PaginationPropsType) => {
 
   return (
     <Wrapper>
-      <IconButton
-        disabled={page === 1}
-        handleClick={previousPage}
-      >
+      <IconButton disabled={page === 1} handleClick={previousPage}>
         <ArrowLeft />
       </IconButton>
       {buttonsArray}
-      <IconButton
-        disabled={page === pages}
-        handleClick={nextPage}
-      >
+      <IconButton disabled={page === pages} handleClick={nextPage}>
         <ArrowRight />
       </IconButton>
     </Wrapper>

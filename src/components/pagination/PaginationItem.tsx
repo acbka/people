@@ -1,48 +1,23 @@
-import React, { ReactElement } from "react";
-import styled from "@emotion/styled/macro";
+import IconButton from "../IconButton";
 
-type PaginationItemProps = {
-  isActive: boolean;
-  isHidden: boolean;
+type PaginationItemPropsType = {
   pageNumber: number;
-  onClick: () => void;
-};
-
-type PaginationItemStyleProps = {
   isActive: boolean;
-  isHidden: boolean;
+  handleClick: () => void;
 };
-
-const Item = styled.button<PaginationItemStyleProps>`
-  display: ${(props) => (props.isHidden ? "none" : "flex")};
-  justify-content: center;
-  align-items: center;
-  width: 36px;
-  height: 36px;
-  margin-right: 10px;
-  border: 1px solid #db38ed;
-  border-radius: 4px;
-  ${(props) => ({
-    color: props.isActive ? "#fff" : "#db38ed",
-    backgroundColor: props.isActive ? "#db38ed" : "#fff",
-  })};
-  cursor: pointer;
-  &:hover {
-     background: #D2D3E0;
-     color: #fff;
-  }
-`;
 
 const PaginationItem = ({
   pageNumber,
-  onClick,
   isActive,
-  isHidden,
-}: PaginationItemProps): ReactElement => {
+  handleClick,
+}: PaginationItemPropsType) => {
   return (
-    <Item isActive={isActive} isHidden={isHidden} onClick={onClick}>
+    <IconButton
+      isActive={isActive}
+      handleClick={handleClick}
+    >
       {pageNumber}
-    </Item>
+    </IconButton>
   );
 };
 

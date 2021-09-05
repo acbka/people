@@ -18,3 +18,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+:root {
+   --color-pink: #db38ed;
+   --color-blue: #01b4e4;
+   --color-grey: #e4e7eb;
+   --color-white: #fff;
+ }

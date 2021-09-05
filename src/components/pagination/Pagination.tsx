@@ -1,108 +1,112 @@
-import React, { ReactElement } from "react";
-import PaginationItem from "./PaginationItem";
 import styled from "@emotion/styled/macro";
-// import dotsIcon from "./dotsIcon.svg";
-import ArrowButton from "./ArrowButton";
+import IconButton from "../IconButton";
+import PaginationItem from "./PaginationItem";
+import { ReactComponent as ArrowRightIcon } from "../../assets/arrow-right.svg";
 
-type PaginationProps = {
-  page: number;
+type PaginationPropsType = {
   pages: number;
-  onPage: number;
-  numberOfItems: number;
+  page: number;
   setPage: (arg: number) => void;
 };
 
-const Row = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  position: relative;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  & > div {
+    display: flex;
+    align-items: center;
+  }
 `;
-const PaginationWrap = styled.div`
-  display: flex;
+const ArrowRight = styled(ArrowRightIcon)`
+  width: 16px;
+  height: 16px;
+  & > path {
+    fill: var(--color-pink);
+  }
 `;
-// const Dots = styled.img`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   width: 37px;
-//   height: 37px;
-//   margin-right: 10px;
-//   border: 1px solid #edf2f7;
-//   border-radius: 4px;
-// `;
-const ArrowLeft = styled.div`
-  width: 10px;
-  height: 10px;
-  border-top: 3px solid #db38ed;
-  border-left: 3px solid #db38ed;
-  margin-left: 3px;
-  transform: rotate(-45deg);
+const ArrowLeft = styled(ArrowRightIcon)`
+  width: 16px;
+  height: 16px;
+  & > path {
+    fill: var(--color-pink);
+  }
+  transform: rotate(180deg);
 `;
-const ArrowRight = styled.div`
-  width: 10px;
-  height: 10px;
-  border-bottom: 3px solid #db38ed;
-  border-right: 3px solid #db38ed;
-  margin-right: 3px;
-  transform: rotate(-45deg);
-`;
-const PaginationInfo = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 5px;
-  transform: translateX(-50%);
-  font-size: 14px;
-  line-height: 23px;
-  color: #718096;
+const Dots = styled.div`
+  width: 35px;
+  height: 35px;
+  background: var(--color-grey);
+  border-radius: 50%;
+  padding: 3px 11px;
+  color: #fff;
 `;
 
-const Pagination = ({
-  page,
-  pages,
-  onPage,
-  numberOfItems,
-  setPage,
-}: PaginationProps): ReactElement => {
-  const info =
-    "Showing " + onPage + " items out of " + numberOfItems + " results found";
+const Pagination = ({ pages, page, setPage }: PaginationPropsType) => {
+  const previousPage = () => {
+    setPage(page - 1);
+  };
+
+  const nextPage = () => {
+    setPage(page + 1);
+  };
 
   const buttonsArray = Array.from({ length: pages }, (v, k) => k + 1).map(
-    (item, index) => (
-      <PaginationItem
-        key={index}
-        onClick={() => setPage(item)}
-        isActive={page === item}
-        isHidden={
-          (page <= 3 && item > 5) ||
-          (page > pages - 2 && item < pages - 4) ||
-          (page > 3 && page <= pages - 2 && (item > page + 2 || item < page - 2))
-        }
-        pageNumber={item}
-      />
-    )
+    (item, index) => {
+      return (
+        (item === 1 && page > 3 && (
+          <div key={index}>
+            <PaginationItem
+              handleClick={() => setPage(item)}
+              isActive={page === item}
+              pageNumber={item}
+            />
+            <Dots>...</Dots>
+          </div>
+        )) ||
+        (((item <= 5 && page <= 3 && item !== 1) ||
+          (item > pages - 5 && page > pages - 3 && item !== pages) ||
+          (item > page - 3 &&
+            item < page + 3 &&
+            item !== 2 &&
+            item !== pages - 1)) && (
+          <PaginationItem
+            key={index}
+            handleClick={() => setPage(item)}
+            isActive={page === item}
+            pageNumber={item}
+          />
+        )) ||
+        (item === pages && page < pages - 2 && (
+          <div key={index}>
+            <Dots>...</Dots>
+            <PaginationItem
+              handleClick={() => setPage(item)}
+              isActive={page === item}
+              pageNumber={item}
+            />
+          </div>
+        ))
+      );
+    }
   );
 
   return (
-    <Row>
-      <ArrowButton page={page - 1} isDisabled={page === 1} setPage={setPage}>
+    <Wrapper>
+      <IconButton
+        disabled={page === 1}
+        handleClick={previousPage}
+      >
         <ArrowLeft />
-      </ArrowButton>
-      <PaginationWrap>
-        {/* {pages > 4 && page >= 3 && <Dots src={dotsIcon} alt="dots" />} */}
-        {buttonsArray}
-        {/* {pages > 4 && page > pages - 2 && <Dots src={dotsIcon} alt="dots" />} */}
-      </PaginationWrap>
-      {pages > 3 && (
-        <ArrowButton
-          page={page + 1}
-          isDisabled={page === pages}
-          setPage={setPage}
-        >
-          <ArrowRight />
-        </ArrowButton>
-      )}
-      <PaginationInfo>{info}</PaginationInfo>
-    </Row>
+      </IconButton>
+      {buttonsArray}
+      <IconButton
+        disabled={page === pages}
+        handleClick={nextPage}
+      >
+        <ArrowRight />
+      </IconButton>
+    </Wrapper>
   );
 };
 
